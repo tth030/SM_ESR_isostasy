@@ -1,5 +1,4 @@
 # SM_ESR_isostasy
-SM_ESR_isostasy
 
 This repository contains a collection of [Jupyter notebooks](#jupyter-notebooks) and [datasets](#datasets) as supplement of the following research paper:
 
