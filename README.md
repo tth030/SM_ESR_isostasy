@@ -1,5 +1,5 @@
-# my-first-binder
-my-first-binder
+# SM_ESR_isostasy
+SM_ESR_isostasy
 
 This repository contains a collection of [Jupyter notebooks](#jupyter-notebooks) and [datasets](#datasets) as supplement of the following research paper:
 
@@ -29,7 +29,7 @@ You can run the notebooks in your browser without installing anything thanks to
 [binder](https://mybinder.org/). Just follow the link below and it will launch 
 remotely a new notebook server for you:
 
-- [Run on binder](https://mybinder.org/v2/gh/tth030/my-first-binder/main?labpath=start.ipynb)
+- [Run on binder](https://mybinder.org/v2/gh/tth030/SM_ESR_isostasy/main?labpath=start.ipynb)
 
 ### Install and run locally (Conda)
 
@@ -38,10 +38,10 @@ installed, you can install all the packages required to run the notebooks in a
 new conda environment using the following commands:
 
 ```bash
-$ git clone https://github.com/tth030/my-first-binder.git
-$ cd my-first-binder
+$ git clone https://github.com/tth030/SM_ESR_isostasy.git
+$ cd SM_ESR_isostasy
 $ conda env create -f environment.yml
-$ conda activate my-first-binder
+$ conda activate SM_ESR_isostasy
 ```
 
 You also need to install a few Jupyterlab extensions with the following command
