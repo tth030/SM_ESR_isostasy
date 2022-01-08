@@ -1,0 +1,13 @@
+------- geodyn2d
+
+geotherm and density profile at the MOR from the 2-D geodynamic model from M1 and M2
+
+------- thermodyn
+
+inputs/outputs from perplex (Thermodynamic calculations for various mantle composition)
+binary files (P-T grid)
+
+------- topography
+
+all data used to analyze the Earth topography
+
