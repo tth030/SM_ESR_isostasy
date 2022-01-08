@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 data_init
+data_figshare
 .DS_Store
