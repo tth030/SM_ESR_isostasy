@@ -406,6 +406,7 @@ def load_strain_rate(path='./data/topography/'):
 
 def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_from_ice=False):
     # Etopo 1
+    collection = False
     if (filtered==True):
         if corrected_from_ice:
             filename  = 'ETOPO1_BedIceCorrected_g_gmt4_filtered.grd'
@@ -417,6 +418,7 @@ def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_fr
             name      = filename.split('.grd')[0]
             nc_etopo1 = xr.open_mfdataset([path+name+'_1.grd',path+name+'_2.grd',path+name+'_3.grd',path+name+'_4.grd',path+name+'_5.grd',path+name+'_6.grd'],
                                           concat_dim=['lon'], combine='nested',engine='netcdf4')
+            collection = True
     else:
         if resolution==1:
             filename = 'ETOPO1_Bed_g_gmt4.grd'
@@ -432,6 +434,10 @@ def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_fr
     x=nc_etopo1.variables['lon'][:]
     y=nc_etopo1.variables['lat'][:]
     elev=nc_etopo1.variables['z'][:]
+    if collection:
+        x=x.to_numpy()
+        y=y.to_numpy()
+        elev=elev.to_numpy()
     print("ETOPO 1 m min/max {} {}".format(np.nanmin(elev),np.nanmax(elev)))
     return x,y,elev
 
@@ -529,6 +535,10 @@ def load_hotspots(path='./data/topography/',write_id=False,write_grid=False):
     x=nc_dist_closest_hs.variables['x'][:]
     y=nc_dist_closest_hs.variables['y'][:]
     dist_closest_hs=nc_dist_closest_hs.variables['z'][:]
+    if not os.path.isfile(path+filename):
+        x=x.to_numpy()
+        y=y.to_numpy()
+        dist_closest_hs=dist_closest_hs.to_numpy()
     print("Distances closest hot spot (Morgan and Morgan, 2007) m min/max {} {}".format(np.nanmin(dist_closest_hs),np.nanmax(dist_closest_hs)))
     
     return x,y,dist_closest_hs
@@ -546,6 +556,10 @@ def load_crustal_thickness(path='./data/topography/'):
     x=nc_crust.variables['lon'][:]
     y=nc_crust.variables['lat'][:]
     crustal_thickness=nc_crust.variables['z'][:]
+    if not os.path.isfile(path+filename):
+        x=x.to_numpy()
+        y=y.to_numpy()
+        crustal_thickness=crustal_thickness.to_numpy()
     print("Crustal thickness (GEMMA 2 arc-min) km min/max {} {}".format(np.nanmin(crustal_thickness),np.nanmax(crustal_thickness)))
     return x,y,crustal_thickness
 
@@ -562,6 +576,10 @@ def load_lithospheric_thickness(path='./data/topography/'):
     x=nc_liththick.variables['lon'][:]
     y=nc_liththick.variables['lat'][:]
     lithospheric_thickness=nc_liththick.variables['z'][:]
+    if not os.path.isfile(path+filename):
+        x=x.to_numpy()
+        y=y.to_numpy()
+        lithospheric_thickness=lithospheric_thickness.to_numpy()
     print("Lithospheric thickness (SteinBerger 2016) km min/max {} {}".format(np.nanmin(lithospheric_thickness),np.nanmax(lithospheric_thickness)))
     lithospheric_thickness=np.where(np.isnan(lithospheric_thickness),-999,lithospheric_thickness)
     return x,y,lithospheric_thickness
@@ -579,6 +597,10 @@ def load_age_lithos(path='./data/topography/'):
     x=nc_agelith.variables['lon'][:]
     y=nc_agelith.variables['lat'][:]
     age_lithos=nc_agelith.variables['z'][:]*1e3
+    if not os.path.isfile(path+filename):
+        x=x.to_numpy()
+        y=y.to_numpy()
+        age_lithos=age_lithos.to_numpy()
     print("Age lithosphere (Poupinet_Shapiro_2008) Ma min/max {} {}".format(np.nanmin(age_lithos),np.nanmax(age_lithos)))
     age_lithos=np.where(np.isnan(age_lithos),-999,age_lithos)
     return x,y,age_lithos
