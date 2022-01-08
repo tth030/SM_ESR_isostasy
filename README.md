@@ -12,6 +12,8 @@ This Repository allows:
 - Displaying and downloading thermodynamic solutions including input files, raw data and grids of density, melt fraction,...
 - Computing basic 1-D isostatic balance for a reference case
 
+While you can run these notebooks on Binder, only a part of the data are accessible from there. Full data are localized on FigShare with the same structure as on the github repository. Therefore, we encourage you to download the full dataset on FigShare and to run jupyter-lab locally in order to be able to display everything.
+
 ## Content
 
 - [How to run the notebooks?](#how-to-run-the-notebooks)
@@ -109,4 +111,13 @@ Some files provided here (data/) comes from a preliminary filtering using a comm
 - [http://www.mantleplumes.org/P%5E4/P%5e4Chapters/MorganP4ElectronicSupp1.pdf](http://www.mantleplumes.org/P%5E4/P%5e4Chapters/MorganP4ElectronicSupp1.pdf)
 - Morgan, W.J. and Morgan, J.P. Plate velocities in the hotspot reference frame, Plates, Plumes and Planetary Processes, Gillian R. Foulger, Donna M. Jurdy, (2007), [doi.org/10.1130/2007.2430(04)](https://pubs.geoscienceworld.org/gsa/books/book/618/chapter/3805271/Plate-velocities-in-the-hotspot-reference-frame)
 
+## License
 
+The source code and data assets are under the following licenses:
+
+    script: MIT. (LICENSE)
+    data:
+        thermodyn: CC-BY-4.0 (LICENSE2)
+        topography: Data from external sources (described in Datasets section)
+
+For a full description, please visit the README and LICENSE files of each package in the corresponding package folders.
