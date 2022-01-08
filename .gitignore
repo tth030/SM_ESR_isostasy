@@ -131,3 +131,4 @@ dmypy.json
 data_init
 data_figshare
 .DS_Store
+environment.yml_failed
