@@ -909,6 +909,43 @@ ridge_Oc6_5_DiffLayer26_TECMOD240 = {
 }
 
 
+# =============================================================================
+ridge_Oc6_5_NoDiffLayer = {
+"numlayers": 6,
+"nature_layers": ['matUC','matMC','matLC','matLM1','matLM2','matSLM'],
+"thicknesses": [6.5e3,0.0e0,0.0e0,0e0,0e0,593.5e3],
+"thermalBc": ['thermBcUC','thermBcMC','thermBcLC','thermBcLM1','thermBcLM2','thermBcSLM'],
+"matUC": {
+        "temp_top": 0.0e0,
+        "H"  : 0.0e0,
+        "rho": 2900.e0
+        },
+"matMC": {
+        "H": 0.0e0,
+        "rho": 2900.e0
+        },
+"matLC": {
+        "H": 0.0e0,
+        "rho": 2900.e0
+        },
+"matLM1": {
+        "rho": 3300,
+        "H": 0.0e0
+        },
+"matLM2": {
+        "rho": 3300,
+        "H": 0.0e0
+        },
+"matSLM": {
+        "rho": 3300
+        }, 
+"thermBcSLM": {
+        "temp_bottom": 1793.15e0,
+        "temp_potential": 1553.15e0,
+        "q_bottom": 111.6718750e-3
+        }
+}
+
 
 # =============================================================================
 ridge_Oc6_5_DiffLayer26 = {

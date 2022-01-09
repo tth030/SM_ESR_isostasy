@@ -48,6 +48,7 @@ book_deltarho = {
         },
     'onlytempdep': {
         'MOR':-12,
+        'MOR2':-12,
         'lith125':-20,
         'lith160':-28.5,
         'lith180':-31.5,

@@ -105,12 +105,12 @@ def compute_pressure_density_profile(layers,geotherm,density_type=1,printOut=Tru
             p        = 0.0e0
             if filename:
                 rho_used = rho_read[0]
-                if (z>zdrho[0] and z<zdrho[1]):
-                    rho_used = rho_used + drho
                 melt_fraction_used = 0 #TODO melt_fraction_read[0] need to be added inside the file
             else:
                 rho_used = density().get_value(ilayer=ilayer,depth=z,pressure=p,temp=t,layers=layers,path=path)
                 melt_fraction_used = melt_fraction_obj().get_value(ilayer=ilayer,depth=z,pressure=p,temp=t,layers=layers,path=path)
+            if (z>zdrho[0] and z<zdrho[1]):
+                rho_used = rho_used + drho
             rho[nl-ni-1] = rho_used
             melt_fraction[nl-ni-1] = melt_fraction_used
             P[nl-ni-1]   = p
@@ -122,12 +122,12 @@ def compute_pressure_density_profile(layers,geotherm,density_type=1,printOut=Tru
                     rho_used = rho_read[len(z_read)-1]
                 else:
                     rho_used = pos2value_1d(z_read,rho_read,z)
-                if (z>zdrho[0] and z<zdrho[1]):
-                    rho_used = rho_used + drho
                 melt_fraction_used = 0 #TODO melt_fraction_read need to be added inside the file
             else:
                 rho_used = density().get_value(ilayer=ilayer,depth=z,pressure=p,temp=t,layers=layers,path=path)
                 melt_fraction_used = melt_fraction_obj().get_value(ilayer=ilayer,depth=z,pressure=p,temp=t,layers=layers,path=path)
+            if (z>zdrho[0] and z<zdrho[1]):
+                rho_used = rho_used + drho
             rho[nl-ni-1]       = rho_used
             melt_fraction[nl-ni-1] = melt_fraction_used
             p          = rho[nl-ni-1] * g * dz

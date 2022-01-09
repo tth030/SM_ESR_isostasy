@@ -4,6 +4,7 @@ from . import geodyn1d
 from .geodyn1d.tools import *
 from .book_deltarho import *
 from copy import deepcopy
+import sys
 
 def compute_rhoref_along_geotherm(perplex,
                                   lithos=None,
@@ -67,55 +68,47 @@ def compute_rhoref_along_geotherm(perplex,
     return sort_melt, sort_rhoref
 
 
-def update_mantle_density(name,book,perplex_name='slm_sp2008',rhoc0=2860):
+def update_mantle_density_to_reference(name,book,perplex_name='slm_sp2008',rhoc0=2860):
     '''
        Update mantle parameters to use perplex grids to compute density
     '''
     newbook    = book
-    allmantles = { 'matLM1', 'matLM2', 'matLM3', 'matSLM' }
+    layers = { 'matLM1', 'matLM2', 'matLM3', 'matSLM' }
 
     if perplex_name:
-        newbook = update_use_tidv(allmantles,newbook,7)
-        newbook = update_perplex_name(allmantles,newbook,perplex_name)
-        newbook = update_deltarho(allmantles,newbook,name,perplex_name,use_perplex=True,rhoc0=rhoc0) # should be run after update_perplex_name if use_perplex is True
+        newbook = update_book(newbook,'use_tidv',7,['LM1','LM2','LM3','SLM'])
+        newbook = update_perplex_name(layers,newbook,perplex_name)
+        newbook = update_deltarho(layers,newbook,name,perplex_name,use_perplex=True,rhoc0=rhoc0) # should be run after update_perplex_name if use_perplex is True
     else:
-        newbook = update_use_tidv(allmantles,newbook,1)
-        newbook = update_deltarho(allmantles,newbook,name,perplex_name,use_perplex=False,rhoc0=rhoc0)
+        newbook = update_book(newbook,'use_tidv',1,['LM1','LM2','LM3','SLM'])
+        newbook = update_deltarho(layers,newbook,name,perplex_name,use_perplex=False,rhoc0=rhoc0)
+        newbook = update_book(newbook,'rho',3311,['LM1','LM2','LM3','SLM'])
     return newbook
 
-def update_use_tidv(allmaterials,book,num):
-    '''
-       1: use thermal expansion only
-       7: use perplex table to compute the density
-    '''
-    newbook = book
-    for material in allmaterials:
-        newbook[material]['use_tidv'] = num
-    return newbook
 
-def update_perplex_name(allmaterials,book,perplex_name):
+def update_perplex_name(layers,book,perplex_name):
     '''
       name: perplex grid name that refers to the composition
     '''
     newbook = book
-    for material in allmaterials:
-        if material == 'matSLM':
-            newbook[material]['perplex_name'] = 'slm_sp2008' # default reference fertile sub-lithospheric mantle composition
+    for layer in layers:
+        if layer == 'matSLM':
+            newbook[layer]['perplex_name'] = 'slm_sp2008' # default reference fertile sub-lithospheric mantle composition
         else:
-            newbook[material]['perplex_name'] = perplex_name
+            newbook[layer]['perplex_name'] = perplex_name
     return newbook
 
-def update_deltarho(allmaterials,book,name,perplex_name='slm_sp2008',use_perplex=False,rhoc0=2860):
+def update_deltarho(layers,book,name,perplex_name='slm_sp2008',use_perplex=False,rhoc0=2860):
     '''
       name: lithosphere name
     '''
     newbook = book
-    for material in allmaterials:
-        if material == 'matSLM':
+    for layer in layers:
+        if layer == 'matSLM':
             deltarho = 0
         else:
             deltarho = find_drho(perplex_name,name,use_perplex,rhoc0)
-        newbook[material]['deltarho'] = deltarho
+        newbook[layer]['deltarho'] = deltarho
     return newbook
 
 def find_drho(perplex_name='slm_sp2008',name='lith125',use_perplex=False,rhoc0=2860):
@@ -127,7 +120,7 @@ def find_drho(perplex_name='slm_sp2008',name='lith125',use_perplex=False,rhoc0=2
         if use_perplex:
             if name not in book['perplex']:
                 print("ERROR: Lithosphere name is unknown ("+name+")")
-                quit()
+                sys.exit()
             if perplex_name in book['perplex'][name]:
                 deltarho = book['perplex'][name][perplex_name]
             else:
@@ -136,9 +129,16 @@ def find_drho(perplex_name='slm_sp2008',name='lith125',use_perplex=False,rhoc0=2
         else:
             if name not in book['onlytempdep']:
                 print("ERROR: Lithosphere name is unknown ("+name+")")
-                quit()
+                sys.exit()
             deltarho = book['onlytempdep'][name]
     else:
         print("ERROR: Not implemented yet with different crustal density than 2860 kg/m3")
-        quit()
+        sys.exit()
     return deltarho
+
+def update_book(book,name,value,layers):
+    newbook = book
+    for layer in layers:
+        newbook['mat'+layer][name] = value
+    return newbook
+

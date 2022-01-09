@@ -425,9 +425,14 @@ def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_fr
         else:
             filename = 'ETOPO1_Bed_g_gmt4_2m.grd'
         if ( not os.path.isfile(path+filename)):
-            print("Unfiltered 2 arc-min ETOPO1 dataset not available (check if you have downloaded FigShare Dataset) - Not available on Binder ({})".format(path+filename))
-            x=[] ; y=[] ; elev=[]
-            return x,y,elev
+            if filename == 'ETOPO1_Bed_g_gmt4.grd':
+                print("Unfiltered raw 1 arc-min ETOPO1 dataset not available (check if you have downloaded FigShare Dataset) - Not available on Binder ({})".format(path+filename))
+                x=[] ; y=[] ; elev=[]
+                return x,y,elev
+            name      = filename.split('.grd')[0]
+            nc_etopo1 = xr.open_mfdataset([path+name+'_1.grd',path+name+'_2.grd',path+name+'_3.grd',path+name+'_4.grd',path+name+'_5.grd',path+name+'_6.grd'],
+                                          concat_dim=['lon'], combine='nested',engine='netcdf4')
+            collection = True
         else:
             nc_etopo1 = netCDF4.Dataset(path+filename)
     #print(nc_etopo1.variables.keys())
@@ -438,7 +443,7 @@ def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_fr
         x=x.to_numpy()
         y=y.to_numpy()
         elev=elev.to_numpy()
-    print("ETOPO 1 m min/max {} {}".format(np.nanmin(elev),np.nanmax(elev)))
+    print("ETOPO 1 m ({}) min/max {} {}".format(filename,np.nanmin(elev),np.nanmax(elev)))
     return x,y,elev
 
 def get_shape_etopo(path='./data/topography/'):
