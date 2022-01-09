@@ -12,7 +12,7 @@ This Repository allows:
 - Displaying and downloading thermodynamic solutions including input files, raw data and grids of density, melt fraction,...
 - Computing basic 1-D isostatic balance for a reference case
 
-While you can run these notebooks on Binder, only a part of the data are accessible from there. Full data are localized on FigShare with the same structure as on the github repository. Therefore, we encourage you to download the full dataset on FigShare and to run jupyter-lab locally in order to be able to display everything.
+While you can run these notebooks on Binder (except topo_cont.ipynb that requires too much RAM), only a part of the data are accessible from there. Full data are localized on FigShare with the same structure as on the github repository. Therefore, we encourage you to download the full dataset on FigShare and to run jupyter-lab locally in order to be able to display everything.
 
 ## Content
 
@@ -55,6 +55,9 @@ $ jupyter labextension install \
     dask-labextension \
     ipygany
 ```
+
+You then need to download the data on Figshare following this [link](https://figshare.com/) (the public link will not be available before publication).
+After that, you have to move the `data_figshare` folder into `SM_ESR_isostasy/`.
 
 Finally run the command below to start the Jupyterlab application. It should
 open a new tab in your browser.
@@ -117,7 +120,7 @@ The source code and data assets are under the following licenses:
 
     script: MIT. (LICENSE)
     data:
-        thermodyn: CC-BY-4.0 (LICENSE2)
+        thermodyn: CC-BY-4.0 (LICENSE)
         topography: Data from external sources (described in Datasets section)
 
 For a full description, please visit the README and LICENSE files of each package in the corresponding package folders.

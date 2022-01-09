@@ -32,7 +32,9 @@ def plot_MOR_profile(path='./data/topography/',name='SEIR_91E',use_fixed_width=T
              'MAR_05N', 'MAR_12S', 'MAR_22N', 'MAR_27N', 'MAR_30S', 'MAR_46S', 'MAR_57N', 'EPR_10N', 'EPR_15S', 'EPR_40S', 'EPR_65S', 'SEIR_110E', 'SEIR_91E'
              'CIR_2N', 'CIR_11S', 'SWIR_24E', 'ARC_24E'
     '''
-        
+
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     
     allfilename = [] ; allsection_pts = [] ; alloutputname = []
     

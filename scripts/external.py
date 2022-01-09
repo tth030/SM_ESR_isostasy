@@ -371,6 +371,8 @@ def plot_correlation(x,y,title,filename='correlation.pdf',nbins = 20,xlabel='x',
 #--------------------------- READING DATA ---------------------
 
 def load_spreading_rate(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Half Spreading rate
     nc_spreading_rate = netCDF4.Dataset(path+'rate.3.2.nc')
     #print(nc_spreading_rate.variables.keys())
@@ -382,6 +384,8 @@ def load_spreading_rate(path='./data/topography/'):
     return x,y,spreading_rate
 
 def load_seafloor_ages(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Seafloor age
     nc_age = netCDF4.Dataset(path+'age.3.2.nc')
     #print(nc_age.variables.keys())
@@ -393,6 +397,8 @@ def load_seafloor_ages(path='./data/topography/'):
     return x,y,age
 
 def load_strain_rate(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Strain rate
     nc_strain_rate = netCDF4.Dataset(path+'GSRM_strain_2m.grd')
     #print(nc_strain_rate.variables.keys())
@@ -405,6 +411,8 @@ def load_strain_rate(path='./data/topography/'):
     return x,y,strain_rate
 
 def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_from_ice=False):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Etopo 1
     collection = False
     if (filtered==True):
@@ -447,6 +455,8 @@ def load_etopo(path='./data/topography/',filtered=True,resolution=2,corrected_fr
     return x,y,elev
 
 def get_shape_etopo(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Etopo 1
     filename  = 'ETOPO1_Bed_g_gmt4_filtered.grd'
     if (os.path.isfile(path+filename)):
@@ -458,6 +468,8 @@ def get_shape_etopo(path='./data/topography/'):
     return nc_etopo1
 
 def load_hotspots(path='./data/topography/',write_id=False,write_grid=False):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Hot spots
     filename = 'dist_closest_hs.grd'
     if write_grid:
@@ -549,6 +561,8 @@ def load_hotspots(path='./data/topography/',write_id=False,write_grid=False):
     return x,y,dist_closest_hs
 
 def load_crustal_thickness(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # Crustal thickness
     filename = 'crust_thickness_GEMMA_2m.grd'
     if (os.path.isfile(path+filename)):
@@ -569,6 +583,8 @@ def load_crustal_thickness(path='./data/topography/'):
     return x,y,crustal_thickness
 
 def load_lithospheric_thickness(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # lithospheric thickness
     filename = 'lith_ave_no_slabs_-180_180_2m.grd'
     if (os.path.isfile(path+filename)):
@@ -590,6 +606,8 @@ def load_lithospheric_thickness(path='./data/topography/'):
     return x,y,lithospheric_thickness
 
 def load_age_lithos(path='./data/topography/'):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
     # thermal age continent
     filename = 'mant_age_map_-180_180_qgis_2m.grd'
     if (os.path.isfile(path+filename)):
@@ -616,6 +634,8 @@ def define_MOR_pts(path='./data/topography/',selection_name='MOR_pts_all',distan
 
         selection_name =  'MOR_pts_all' or 'MOR_pts_far_from_hs' or 'MOR_pts_close_to_hs'
     '''
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
 
     filename = './'+selection_name+'_'+str(distance_between_pts_along_ridges)+'km.dat'
 

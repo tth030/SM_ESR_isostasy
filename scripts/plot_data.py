@@ -16,6 +16,9 @@ def plot_MOR(what='elevation',path='./data/topography/',selection_name='MOR_pts_
              what           = 'spreadingRate' or 'elevation'
              selection_name =  'MOR_pts_all' or 'MOR_pts_far_from_hs' or 'MOR_pts_close_to_hs'
     '''
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
+
     define_rcParams()
 
     filename = './'+selection_name+'_'+str(distance_between_pts_along_ridges)+'km.dat'
@@ -100,6 +103,9 @@ def plot_global_maps_continents(x, y, data,
                   "age_lithos"
         orientationbar = 'horizontal', 'vertical'
     '''
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
+
     define_rcParams()
 
     fig = plt.figure(figsize=(25/2.54,12.5/2.54))
@@ -204,6 +210,9 @@ def plot_global_maps_continents(x, y, data,
 def plot_histo_elev_MOR(path='./data/topography/',selection_name='MOR_pts_all',distance_between_pts_along_ridges = 25,
                         GaussianModel=True,sigmamodel=250,meanmodel=-2750,
                         savefig=False):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
+
     define_rcParams()
 
     filename = './'+selection_name+'_'+str(distance_between_pts_along_ridges)+'km.dat'
@@ -219,6 +228,9 @@ def plot_histo_elev_MOR(path='./data/topography/',selection_name='MOR_pts_all',d
 
 def plot_correlation_elev_spreading_rate(path='./data/topography/',selection_name='MOR_pts_all',distance_between_pts_along_ridges = 25,
                                          savefig=False):
+    if os.path.exists('./data_figshare/topography/'):
+        path='./data_figshare/topography/'
+
     define_rcParams()
 
     filename = './'+selection_name+'_'+str(distance_between_pts_along_ridges)+'km.dat'
