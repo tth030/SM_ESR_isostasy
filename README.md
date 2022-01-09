@@ -2,7 +2,7 @@
 
 This repository contains a collection of [Jupyter notebooks](#jupyter-notebooks) and [datasets](#datasets) as supplement of the following research paper:
 
-- Theunissen, T., Huismans, R.S., Lu, G. and Riel, N. Relative continent/mid-ocean ridge elevation: a reference case for isostasy in geodynamics. Earth-Science Reviews (Under preparation, submission december 2021)
+- Theunissen, T., Huismans, R.S., Lu, G. and Riel, N. Relative continent/mid-ocean ridge elevation: a reference case for isostasy in geodynamics. Earth-Science Reviews (Submission January 2022)
 
 ***Please cite the source when using these data.***
 
@@ -68,13 +68,13 @@ $ jupyter-lab start.ipynb
 
 ## Jupyter notebooks
 
-- `start.ipynb`: general introduction and disclaimers
-- `topo_cont.ipynb`: data display and computation of statistics of Earth Topography
-- `topo_MOR.ipynb`: data display and computation of statistics of mid-ocean ridges elevation
-- `thermo.ipynb`: data display and building grid from results of thermodynamic calculations
-- `isostasy_ref.ipynb`: 1-D isostatic comparison of reference columns, provide semi-analytical solution for the water depth at the ridge for models M1 and M2 (Figures 7 and 8)
-- `isostasy_calib.ipynb`: Calibration of the crustal density and degree of depletion of the continentlal lithospheric mantle and sensitivity on water depth/sea level
-- `isostasy_calib2.ipynb`: Calibration of the reference mantle density with temperature dependent only densities (model M2)
+- `start.ipynb`: general introduction and disclaimers.
+- `topo_cont.ipynb`: data display and computation of statistics of Earth Topography.
+- `topo_MOR.ipynb`: data display and computation of statistics of mid-ocean ridges elevation.
+- `thermo.ipynb`: data display and building grid from results of thermodynamic calculations.
+- `isostasy_ref.ipynb`: 1-D isostatic comparison of reference columns, provide semi-analytical solution for the water depth at the ridge for models M1 and M2.
+- `isostasy_calib.ipynb`: Calibration of the crustal density and degree of depletion of the continentlal lithospheric mantle and sensitivity on water depth/sea level.
+- `isostasy_calib2.ipynb`: Calibration of the reference mantle density with temperature dependent only densities (model M2).
 
 ## Datasets
 
