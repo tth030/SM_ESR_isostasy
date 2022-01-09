@@ -69,8 +69,12 @@ $ jupyter-lab start.ipynb
 ## Jupyter notebooks
 
 - `start.ipynb`: general introduction and disclaimers
-- `topography.ipynb`: data display and download, computation of statistics of Earth Topography
-- `thermodyn.ipynb`: data display and download, results from thermodynamic calculations
+- `topo_cont.ipynb`: data display and computation of statistics of Earth Topography
+- `topo_MOR.ipynb`: data display and computation of statistics of mid-ocean ridges elevation
+- `thermo.ipynb`: data display and building grid from results of thermodynamic calculations
+- `isostasy_ref.ipynb`: 1-D isostatic comparison of reference columns, provide semi-analytical solution for the water depth at the ridge for models M1 and M2 (Figures 7 and 8)
+- `isostasy_calib.ipynb`: Calibration of the crustal density and degree of depletion of the continentlal lithospheric mantle and sensitivity on water depth/sea level
+- `isostasy_calib2.ipynb`: Calibration of the reference mantle density with temperature dependent only densities (model M2)
 
 ## Datasets
 
