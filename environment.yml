@@ -9,6 +9,7 @@ dependencies:
   - geos=3.8.0
   - pyproj=2.6.1
   - numpy
+  - statsmodels
   - pandas
   - dask
   - xarray
