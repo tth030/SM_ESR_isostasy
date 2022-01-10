@@ -133,3 +133,4 @@ data_figshare
 .DS_Store
 environment.yml_failed
 data_figshare.zip
+*.pdf

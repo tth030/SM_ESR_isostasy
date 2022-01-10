@@ -9,6 +9,7 @@ import netCDF4
 import os
 import pyproj
 import pickle
+from statsmodels.stats.weightstats import DescrStatsW
 
 from matplotlib import rcParams, rcParamsDefault
 
@@ -213,25 +214,45 @@ def equi(m, centerlon, centerlat, radius, *args, **kwargs):
         X,Y = m(X,Y)
         plt.plot(X,Y,**kwargs)
 
-def plot_histo(data,title,filename='histo.pdf',xlabel='Elevation (m)',unit='m',GaussianModel=False,sigmamodel=270,meanmodel=-2950,legends="upper right",text="left",approximation_display="int",xlim=None,savefig=False):
+def plot_histo(data,title,
+               filename='histo.pdf',
+               xlabel='Elevation (m)',unit='m',
+               GaussianModel=False,sigmamodel=270,meanmodel=-2950,
+               legends="upper right",text="left",
+               approximation_display="int",
+               xlim=None,
+               savefig=False,
+               fig_x=9.5,
+               fig_y=9,
+               weights=None,nbins=40):
     '''
        Plot histogram with some statistics
     '''
     define_rcParams()
-    plt.figure(figsize=(9.5/2.54,9/2.54))
-    n, bins, patches = plt.hist(x=data,bins=40, color='#0504aa',alpha=0.7, rwidth=0.85)
+    plt.figure(figsize=(fig_x/2.54,fig_y/2.54))
+
+    if xlim:
+        data = np.ma.MaskedArray(data, mask=( (data<xlim[0]) | (data>xlim[1]) ))
+
+    n, bins, patches = plt.hist(x=data,bins=nbins, color='#0504aa',alpha=0.7, rwidth=0.85,weights=weights)
+
     plt.grid(axis='y', alpha=0.75)
     plt.xlabel(xlabel)
     plt.ylabel('Frequency')
     plt.title(title)
-    if approximation_display=="int":
-        mean  = int(np.ceil(np.nanmean(data)))
-        med   = int(np.ceil(np.ma.median(data)))
-        sigma = int(np.ceil(np.nanstd(data)))
-    else:
-        mean  = np.around(np.nanmean(data),1)
-        med   = np.around(np.ma.median(data),1)
-        sigma = np.around(np.nanstd(data),1)
+
+    mean   = np.nanmean(data)
+    median = np.ma.median(data)
+    sigma  = np.nanstd(data)
+
+    if weights is not None:
+        ma      = np.ma.MaskedArray(data, mask=np.isnan(data))
+        meanW   = np.ma.average(ma, weights=weights)
+        dsw     = DescrStatsW(ma, weights=weights)
+        stdW    = dsw.std  # weighted std
+        mean    = meanW
+        sigma   = stdW
+
     xval  = np.linspace(np.nanmin(data),np.nanmax(data),1000)
     yval  = np.exp(-(xval-mean)**2/(2*sigma**2)) / np.sqrt(2*np.pi*sigma**2)
     yval  = yval*n.max()/np.nanmax(yval)
@@ -243,6 +264,15 @@ def plot_histo(data,title,filename='histo.pdf',xlabel='Elevation (m)',unit='m',G
         yval2 = yval2*n.max()/np.nanmax(yval2)
         p = plt.plot(xval,yval2,label='Estimated Gaussian model')
 
+    if approximation_display=="int":
+        mean  = int(np.ceil(mean))
+        med   = int(np.ceil(median))
+        sigma = int(np.ceil(sigma))
+    else:
+        mean  = np.around(mean,1)
+        med   = np.around(median,1)
+        sigma = np.around(sigma,1)
+
     if legends=="upper right":
         plt.legend(loc=legends, bbox_to_anchor=(1,1),framealpha=0.4)
     elif legends=="upper left":
@@ -252,17 +282,27 @@ def plot_histo(data,title,filename='histo.pdf',xlabel='Elevation (m)',unit='m',G
         xtext = 0.7
     else:
         xtext = 0.05
-    ytext = 0.7 ; voff = 0.03 ; hoff = 0.1
-    plt.text(xtext,ytext       ,r'$\overline{elev}$',transform=ax.transAxes) ; plt.text(xtext+hoff,ytext       ,r'$=$'+str(mean)  +' '+unit,transform=ax.transAxes)
+    ytext = 0.7 ; voff = 0.035 ; hoff = 0.1
+    if weights is not None:
+        plt.text(xtext,ytext       ,r'$\overline{elev}_W$',transform=ax.transAxes) ; plt.text(xtext+hoff,ytext       ,r'$=$'+str(mean)  +' '+unit,transform=ax.transAxes)
+    else:
+        plt.text(xtext,ytext       ,r'$\overline{elev}$',transform=ax.transAxes)   ; plt.text(xtext+hoff,ytext       ,r'$=$'+str(mean)  +' '+unit,transform=ax.transAxes)
     plt.text(xtext,ytext-voff  ,r'$median$',transform=ax.transAxes)          ; plt.text(xtext+hoff,ytext-voff  ,r'$=$'+str(med)   +' '+unit,transform=ax.transAxes)
-    plt.text(xtext,ytext-2*voff,r'$\sigma$',transform=ax.transAxes)          ; plt.text(xtext+hoff,ytext-2*voff,r'$=$'+str(sigma) +' '+unit,transform=ax.transAxes)
+    if weights is not None:
+        plt.text(xtext,ytext-2*voff,r'$\sigma_{W}$',transform=ax.transAxes)          ; plt.text(xtext+hoff,ytext-2*voff,r'$=$'+str(sigma) +' '+unit,transform=ax.transAxes)
+    else:
+        plt.text(xtext,ytext-2*voff,r'$\sigma$',transform=ax.transAxes)          ; plt.text(xtext+hoff,ytext-2*voff,r'$=$'+str(sigma) +' '+unit,transform=ax.transAxes)
     
     if GaussianModel:
         # model
-        plt.text(xtext,ytext-0.15     ,r'$\overline{elev}$',transform=ax.transAxes,color=p[0].get_color())
-        plt.text(xtext+hoff,ytext-0.15,r'$=$'+str(meanmodel)  +' '+unit,transform=ax.transAxes,color=p[0].get_color())
-        plt.text(xtext,ytext-0.15-voff     ,r'$\sigma$',transform=ax.transAxes,color=p[0].get_color())
-        plt.text(xtext+hoff,ytext-0.15-voff,r'$=$'+str(sigmamodel) +' '+unit,transform=ax.transAxes,color=p[0].get_color())
+        if weights is None:
+            vshift = 0.15
+        else:
+            vshift = 0.18
+        plt.text(xtext,ytext-vshift     ,r'$\overline{elev}$',transform=ax.transAxes,color=p[0].get_color())
+        plt.text(xtext+hoff,ytext-vshift,r'$=$'+str(meanmodel)  +' '+unit,transform=ax.transAxes,color=p[0].get_color())
+        plt.text(xtext,ytext-vshift-voff     ,r'$\sigma$',transform=ax.transAxes,color=p[0].get_color())
+        plt.text(xtext+hoff,ytext-vshift-voff,r'$=$'+str(sigmamodel) +' '+unit,transform=ax.transAxes,color=p[0].get_color())
 
     maxfreq = n.max()
     plt.ylim(ymax=np.ceil(maxfreq / 10) * 10 if maxfreq % 10 else maxfreq + 10)
@@ -276,28 +316,52 @@ def plot_histo(data,title,filename='histo.pdf',xlabel='Elevation (m)',unit='m',G
     return ax
 
 
-def plot_correlation(x,y,title,filename='correlation.pdf',nbins = 20,xlabel='x',ylabel='y',unit='m',text="right",plottext=True,xlim=None,ylim=None,ticks=None,savefig=False):
+def plot_correlation(x,y,title,filename='correlation.pdf',
+                     nbins = 20,
+                     xlabel='x',ylabel='y',unit='m',text="right",plottext=True,
+                     xlim=None,ylim=None,ticks=None,
+                     savefig=False,
+                     fig_x=9.5,
+                     fig_y=9,
+                     weights=None):
     ''' ticks = [tick_dx1,tick_dx2,tick_dy1,tick_dy2]
         unit = from "y" variable
     '''
     define_rcParams()
-    plt.figure(figsize=(10/2.54,10/2.54))
+   
+    plt.figure(figsize=(fig_x/2.54,fig_y/2.54))
     ax = plt.gca()
+    
     plt.plot(x,y,'ko',markersize=0.5,zorder=0,rasterized=True)
+
     if (xlim):
         xstat = np.linspace(xlim[0],xlim[1],nbins)
         nb12 = (xlim[1]-xlim[0])/(2*nbins)
     else:
         xstat = np.linspace(np.nanmin(x),np.nanmax(x),nbins)
         nb12 = (np.nanmax(x)-np.nanmin(x))/(2*nbins)
+
     mean = [] ; median = [] ; sigma = [] ; xused = []
     for rate in xstat:
-        selection = y[( (x>=rate-nb12) & (x<=rate+nb12))]
-        if selection!=[]:
+        data  = y[( (x>=rate-nb12) & (x<=rate+nb12))]
+        if weights is not None:
+            selweights = weights[( (x>=rate-nb12) & (x<=rate+nb12))]
+        if data!=[]:
             xused.append(rate)
-            mean.append(np.nanmean(selection))
-            median.append(np.ma.median(selection))
-            sigma.append(np.nanstd(selection))
+            med    = np.ma.median(data)
+            if weights is None:
+                avg    = np.nanmean(data)
+                std    = np.nanstd(data)
+            else:
+                ma      = np.ma.MaskedArray(data, mask=np.isnan(data))
+                avgW    = np.ma.average(ma, weights=selweights)
+                dsw     = DescrStatsW(ma, weights=selweights)
+                stdW    = dsw.std  # weighted std
+                avg     = avgW
+                std     = stdW
+            mean.append(avg)
+            median.append(med)
+            sigma.append(std)
     mean = np.asarray(mean) ; sigma = np.asarray(sigma) ; median = np.asarray(median) ; xused = np.asarray(xused)
 
     plt.plot(xused,median,color='r',zorder=3,linewidth=2,label='median')
