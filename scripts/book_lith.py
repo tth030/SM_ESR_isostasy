@@ -450,21 +450,7 @@ book_ridge   = {
                     'alpha': 3.0e-5,
                     'rho': 2900
                },
-               'matLM1': {
-                          'deltarho': -12,
-                          'rho': 3311,
-                          'use_tidv': 1,
-                          'alpha': 3.0e-5,
-                          'perplex_name': 'slm_sp2008'
-                         },
-               'matLM2': {
-                          'deltarho': -12,
-                          'rho': 3311,
-                          'use_tidv': 1,
-                          'alpha': 3.0e-5,
-                          'perplex_name': 'slm_sp2008'
-                         },
-               'matLM3': {
+               'matSLMd': {
                           'deltarho': -12,
                           'rho': 3311,
                           'use_tidv': 1,
@@ -472,16 +458,21 @@ book_ridge   = {
                           'perplex_name': 'slm_sp2008'
                          },
               'matSLM': {
-                          'deltarho': -12,
+                          'deltarho': 0,
                           'rho': 3311,
                           'use_tidv': 1,
                           'alpha': 3.0e-5,
                           'perplex_name': 'slm_sp2008'
                          },
+               'thermBcSLMd': {                  # applied LM1 is adiabatic
+                   'temp_bottom': 1603.15e0,
+                   'temp_potential': 1553.15e0,
+                   'q_bottom': 437.2421875e-3
+               },
                'thermBcSLM': {
                    'temp_bottom': 1793.15e0,
                    'temp_potential': 1553.15e0,
-                   'q_bottom': 18.5546875e-3 #19.5e-3,
+                   'q_bottom': 437.2421875e-3
                }
                }
 

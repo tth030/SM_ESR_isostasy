@@ -72,17 +72,17 @@ def update_mantle_density_to_reference(name,book,perplex_name='slm_sp2008',rhoc0
     '''
        Update mantle parameters to use perplex grids to compute density
     '''
-    newbook    = book
-    layers = { 'matLM1', 'matLM2', 'matLM3', 'matSLM' }
+    newbook    = book.copy()
+    layers = { 'matLM1', 'matLM2', 'matLM3', 'matSLMd', 'matSLM' }
 
     if perplex_name:
-        newbook = update_book(newbook,'use_tidv',7,['LM1','LM2','LM3','SLM'])
+        newbook = update_book(newbook,'use_tidv',7,['LM1','LM2','LM3','SLMd','SLM'])
         newbook = update_perplex_name(layers,newbook,perplex_name)
         newbook = update_deltarho(layers,newbook,name,perplex_name,use_perplex=True,rhoc0=rhoc0) # should be run after update_perplex_name if use_perplex is True
     else:
-        newbook = update_book(newbook,'use_tidv',1,['LM1','LM2','LM3','SLM'])
+        newbook = update_book(newbook,'use_tidv',1,['LM1','LM2','LM3','SLMd','SLM'])
         newbook = update_deltarho(layers,newbook,name,perplex_name,use_perplex=False,rhoc0=rhoc0)
-        newbook = update_book(newbook,'rho',3311,['LM1','LM2','LM3','SLM'])
+        newbook = update_book(newbook,'rho',3311,['LM1','LM2','LM3','SLMd','SLM'])
     return newbook
 
 
@@ -90,25 +90,31 @@ def update_perplex_name(layers,book,perplex_name):
     '''
       name: perplex grid name that refers to the composition
     '''
-    newbook = book
+    newbook = book.copy()
     for layer in layers:
-        if layer == 'matSLM':
-            newbook[layer]['perplex_name'] = 'slm_sp2008' # default reference fertile sub-lithospheric mantle composition
-        else:
-            newbook[layer]['perplex_name'] = perplex_name
+        if layer in newbook:
+            if layer == 'matSLM':
+                newbook[layer]['perplex_name'] = 'slm_sp2008' # default reference fertile sub-lithospheric mantle composition
+            else:
+                newbook[layer]['perplex_name'] = perplex_name
+        #else:
+        #    print('No "{}" in this book'.format(layer))
     return newbook
 
 def update_deltarho(layers,book,name,perplex_name='slm_sp2008',use_perplex=False,rhoc0=2860):
     '''
       name: lithosphere name
     '''
-    newbook = book
+    newbook = book.copy()
     for layer in layers:
         if layer == 'matSLM':
             deltarho = 0
         else:
             deltarho = find_drho(perplex_name,name,use_perplex,rhoc0)
-        newbook[layer]['deltarho'] = deltarho
+        if layer in newbook:
+            newbook[layer]['deltarho'] = deltarho
+        #else:
+        #    print('No "{}" in this book'.format(layer))
     return newbook
 
 def find_drho(perplex_name='slm_sp2008',name='lith125',use_perplex=False,rhoc0=2860):
@@ -137,8 +143,11 @@ def find_drho(perplex_name='slm_sp2008',name='lith125',use_perplex=False,rhoc0=2
     return deltarho
 
 def update_book(book,name,value,layers):
-    newbook = book
+    newbook = book.copy()
     for layer in layers:
-        newbook['mat'+layer][name] = value
+        if 'mat'+layer in newbook:
+            newbook['mat'+layer][name] = value
+        #else:
+        #    print('No "{}" in this book'.format('mat'+layer))
     return newbook
 

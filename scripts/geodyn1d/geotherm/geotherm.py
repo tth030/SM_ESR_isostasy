@@ -277,7 +277,7 @@ class thermal_conductivity(object):
             Tbasal = layers[i].thermalBc.temp_bottom
             Tp     = layers[i].thermalBc.temp_potential
             Qbasal = layers[i].thermalBc.q_bottom
-            Grad_slm = (Tbasal-Tp)/Column_thickness
+            Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)   #Column_thickness
             k        = Qbasal/Grad_slm
         return k
     
@@ -304,7 +304,7 @@ class thermal_conductivity(object):
             Tbasal = layers[i].thermalBc.temp_bottom
             Tp     = layers[i].thermalBc.temp_potential
             Qbasal = layers[i].thermalBc.q_bottom
-            Grad_slm = (Tbasal-Tp)/Column_thickness
+            Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)   #Column_thickness
             k        = Qbasal/Grad_slm
         return k
 

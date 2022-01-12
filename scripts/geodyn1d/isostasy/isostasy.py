@@ -398,6 +398,7 @@ class thermal_expansion(object):
         # Density constant
         # defined by layer properties
         alpha = 0.0e0
+        print(alpha)
         return alpha
     
     def alpha_type1(self,ilayer,depth,pressure,temp,layers):

@@ -1,4 +1,5 @@
 
+import sys
 import numpy as np
 import os.path
 from scipy import interpolate
@@ -58,6 +59,9 @@ def read_output_from_perple_x(tablename,path=None,fractionation=False):
         filename = path.partition('thermodyn.py')[0]+'data/'+tablename+'.phm'
     else:
         filename = path+'/'+tablename+'.phm'
+
+    if not (os.path.isfile(filename)):
+        sys.exit("ERROR(read_output_from_perple_x): Either this file does not exist or the path is uncorrect {} ".format(filename))
 
     if ( fractionation == False ):
         num_lines_header = 13
@@ -2192,6 +2196,10 @@ def bin2csv_tectmod(perplex,tablename):
     # Write ascii file
     path     = os.path.abspath(__file__)
     filename = path.partition('thermodyn.py')[0]+'data/'+tablename+'.csv'
+
+    if not (os.path.isfile(filename)):
+        sys.exit("ERROR (bin2csv_tectmod): Either this file does not exist or the path is uncorrect {} ".format(filename))
+
     f = open(filename, 'w')
     f.write('nan')
     for i in range(0,int(perplex.nt)-1):
@@ -2296,6 +2304,9 @@ def read_binary_file_perplex(tablename,path=None):
         filename = path.partition('thermodyn.py')[0]+'data/'+tablename+'.bin'   
     else:
         filename = path+'/'+tablename+'.bin'
+
+    if not (os.path.isfile(filename)):
+        sys.exit("ERROR(read_binary_file_perplex): Either this file does not exist (maybe need to compute the grid using the notebook thermo.ipynb) or the path is uncorrect {} ".format(filename))
 
     perplex  = perplex_output()
     
