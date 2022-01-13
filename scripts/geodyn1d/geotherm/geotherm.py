@@ -122,7 +122,6 @@ def compute_steady_state_geotherm(layers,printOut=True,dz=dz_init):
         Column_thickness = sum([ layers[i].thickness for i in range(0,nlayers) ])
         Grad_slm         = (Tbasal-Tp)/Column_thickness
         k                = thermal_conductivity().get_value(depth=Column_thickness,layers=layers,temperature=Tbasal)
-        
         T.append(Tbasal)
         k_arr.append(k)
         Z.append(Column_thickness)
@@ -246,7 +245,10 @@ class thermal_conductivity(object):
             Tbasal = layers[i].thermalBc.temp_bottom
             Tp     = layers[i].thermalBc.temp_potential
             Qbasal = layers[i].thermalBc.q_bottom
-            Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)   #Column_thickness
+            if cumdepth == Column_thickness:
+                Grad_slm = (Tbasal-Tp)/cumdepth
+            else:
+                Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)
             k        = Qbasal/Grad_slm
         return k
     def k_type1(self,depth,layers,temperature):
@@ -277,7 +279,10 @@ class thermal_conductivity(object):
             Tbasal = layers[i].thermalBc.temp_bottom
             Tp     = layers[i].thermalBc.temp_potential
             Qbasal = layers[i].thermalBc.q_bottom
-            Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)   #Column_thickness
+            if cumdepth == Column_thickness:
+                Grad_slm = (Tbasal-Tp)/cumdepth
+            else:
+                Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)
             k        = Qbasal/Grad_slm
         return k
     
@@ -304,7 +309,10 @@ class thermal_conductivity(object):
             Tbasal = layers[i].thermalBc.temp_bottom
             Tp     = layers[i].thermalBc.temp_potential
             Qbasal = layers[i].thermalBc.q_bottom
-            Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)   #Column_thickness
+            if cumdepth == Column_thickness:
+                Grad_slm = (Tbasal-Tp)/cumdepth
+            else:
+                Grad_slm = (Tbasal-Tp)/(cumdepth+layers[i].thickness)
             k        = Qbasal/Grad_slm
         return k
 
